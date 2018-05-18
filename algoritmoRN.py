@@ -24,14 +24,15 @@ np.random.seed(50)
 #Arquitectura
 def model():
 	model = Sequential()
-	model.add(Dense(6, input_dim=6, activation='relu')) #primera capa de entrada, 6 nodos, cada nodo con una entrada
-	model.add(Dense(3, activation='relu'))#segunda capa reducida a 3 nodos
-	model.add(Dense(1, activation='softmax'))#capa de salida con 1 nodo.
-	ad = optimizers.Adam(lr=0.001)
+	model.add(Dense(27, input_dim=27, activation='softsign' )) #primera capa de entrada, 6 nodos, cada nodo con una entrada
+	model.add(Dense(54,  activation='relu'))#segunda capa reducida a 3 nodos
+	model.add(Dense(18,  activation='relu'))
+	model.add(Dense(1, activation='softsign'))#capa de salida con 1 nodo.
+	ad = optimizers.Adam(lr=0.0001)
 	# calculando el error por error cuadratico medio, y solicitando que retorne la precision con la que acerta
 	#Adam es un optimizador de aprendizaje, lr es learning rate es la proporcion con la que se cambiaran los aleatorios de los pesos
 	#adam https://machinelearningmastery.com/adam-optimization-algorithm-for-deep-learning/
-	model.compile(optimizer=ad ,loss='mean_squared_error', metrics=['mean_absolute_error', 'mean_absolute_percentage_error'])
+	model.compile(optimizer=ad ,loss='mean_absolute_error', metrics=['mean_absolute_error', 'mean_absolute_percentage_error'])
 	return model
 
 
@@ -50,12 +51,12 @@ def model():
 dataset = np.loadtxt("%s/TSLA.csv" % path, delimiter=",")
 
 #INPUTS Y OUTPUT PARA ENTRENAR
-X = dataset[0:140, 0:6]
-Y = dataset[0:140, 6]
+X = dataset[0:50, 0:27]
+Y = dataset[0:50, 27]
 
 #INPUNTS Y OUTPUT PARA VALIDAR
-A = dataset[140:225, 0:6]
-B = dataset[140:225, 6]
+A = dataset[0:56, 0:27]
+B = dataset[0:56, 27]
 
 
 #MUESTRA DE GRAFICAS
@@ -102,7 +103,7 @@ while (ent != "exit"):
     ent = str(input("\n¿ Entrenar red (train), validar red (valid), guardar red (save) o salir del programa (exit) ?\n>>> "))
     if ent == 'train':
         #ENTRENAMIENTO DE LA RED
-        entrenamiento = model.fit(X, Y, epochs=200, batch_size=8) #epochs es el numero de repeticiones que realizara el codigo para entrenarse
+        entrenamiento = model.fit(X, Y, epochs=5000, batch_size=4, shuffle=False) #epochs es el numero de repeticiones que realizara el codigo para entrenarse
         print("\nResultados:")
         validacion(model, X, Y)
         print("\n")
@@ -157,8 +158,4 @@ while (ent != "exit"):
     elif ent == "exit":
         #SALIDA DEL PROGRAMA
         ent = "exit"
-
-
-
-
 
